@@ -9,6 +9,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
+// api's
+app.use("/expense_api", require("./routes/expenseRoutes.js"));
+
 // sql database connection :
 sequelize.sync();
 app.listen(process.env.BACKEND_PORT, () => {
