@@ -11,9 +11,12 @@ app.use(cors());
 
 // api's
 app.use("/expense_api", require("./routes/expenseRoutes.js"));
+app.use('/user_api',require('./routes/userRoutes.js'))
 
 // sql database connection :
-sequelize.sync();
+sequelize.sync().then(()=>{
+  console.log("datbase connected")
+})
 app.listen(process.env.BACKEND_PORT, () => {
   console.log("Server Listen at Port : ", process.env.BACKEND_PORT);
 });
