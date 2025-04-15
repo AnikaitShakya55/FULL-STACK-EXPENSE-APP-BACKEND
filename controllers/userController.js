@@ -6,9 +6,10 @@ const JWT_SECRET = "dfjkfdjdfkvkdfjbfbfggfgfvjg";
 
 exports.register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
-    if (!name || !email || !password) {
-      return res.status(200).send({
+    const { username, email, password } = req.body;
+    console.log("REGISTER", req.body);
+    if (!username || !email || !password) {
+      return res.status(401).send({
         message: "Please Enter Valid SignUp Details",
       });
     }
@@ -22,7 +23,7 @@ exports.register = async (req, res) => {
 
     // Create user
     await User.create({
-      name,
+      name: username,
       email,
       password: hashedPassword,
     });
@@ -34,6 +35,7 @@ exports.register = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
+  console.log(req.body);
   try {
     const { email, password } = req.body;
 
@@ -56,6 +58,12 @@ exports.login = async (req, res) => {
 
     const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, {
       expiresIn: "1d",
+    });
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false, // set to true in production
+      sameSite: "Lax",
     });
 
     return res.status(200).json({

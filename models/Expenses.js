@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../utils/database.js");
 
-const Expense = sequelize.define("Expense", {
+const Expenses = sequelize.define("Expenses", {
   title: { type: DataTypes.STRING, allowNull: false },
   description: {
     type: DataTypes.STRING,
@@ -15,6 +15,10 @@ const Expense = sequelize.define("Expense", {
     type: DataTypes.DATE,
     allowNull: false,
   },
+  user_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
 });
 
-module.exports = Expense;
+module.exports = Expenses;
