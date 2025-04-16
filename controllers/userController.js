@@ -1,8 +1,40 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const Sib = require("sib-api-v3-sdk");
 
 const JWT_SECRET = "dfjkfdjdfkvkdfjbfbfggfgfvjg";
+
+const client = Sib.ApiClient.instance;
+const apiKey = client.authentications["api-key"];
+apiKey.apiKey = process.env.SIB_API_KEY;
+const transEmailApi = new Sib.TransactionalEmailsApi();
+
+exports.forgetHandler = async (req, res) => {
+  console.log(req.body);
+  try {
+    const sender = {
+      email: "shakya.ani47@gmail.com",
+      name: "Expense App",
+    };
+
+    const receivers = [{ email: req.body.email }];
+
+    const response = await transEmailApi.sendTransacEmail({
+      sender,
+      to: receivers,
+      subject: "FORGOT PASSWORD SERVICE",
+      textContent: "Learning sending email service",
+    });
+
+    console.log("Email sent successfully!", response);
+    res.status(200).json({ message: "Email sent successfully" });
+  } catch (error) {
+    console.error("Error sending email:", error);
+    res.status(500).json({ error: "Failed to send email" });
+  }
+};
+
 
 exports.register = async (req, res) => {
   try {

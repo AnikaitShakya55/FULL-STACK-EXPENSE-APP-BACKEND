@@ -21,11 +21,9 @@ app.use(
 app.use("/expense_api", require("./routes/expenseRoutes.js"));
 app.use("/user_api", require("./routes/userRoutes.js"));
 
-
-// relations 
+// relations
 User.hasMany(Expenses, { foreignKey: "user_id" });
 Expenses.belongsTo(User, { foreignKey: "user_id" });
-
 
 // sql database connection :
 sequelize.sync().then(() => {
