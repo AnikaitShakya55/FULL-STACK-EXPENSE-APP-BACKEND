@@ -5,6 +5,7 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const User = require("./models/User.js");
 const Expenses = require("./models/Expenses.js");
+const ForgotPasswordRequest = require("./models/ForgetPasswordRequest.js");
 const app = express();
 
 // middlewares
@@ -24,6 +25,9 @@ app.use("/user_api", require("./routes/userRoutes.js"));
 // relations
 User.hasMany(Expenses, { foreignKey: "user_id" });
 Expenses.belongsTo(User, { foreignKey: "user_id" });
+// forgetpasswordRequest
+User.hasMany(ForgotPasswordRequest);
+ForgotPasswordRequest.belongsTo(User);
 
 // sql database connection :
 sequelize.sync().then(() => {
